@@ -1,0 +1,60 @@
+
+
+spring:
+  datasource:
+    username: root
+    url: 'jdbc:mysql://localhost:3306/employee_management_system?useSSL=false'
+    password: Suspro@19811
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update 
+  application:
+    name: employee-service
+   
+hibernate:
+  dialect:
+    storage_engine: innodb
+                  
+server:
+  port: 8080
+  
+eureka:  
+  instance:
+    hostname: localhost 
+    
+    
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      employeeService:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED         
+        
+        
+
+          
